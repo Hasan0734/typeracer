@@ -1,15 +1,15 @@
 "use client"
 import TypingArea from "@/components/TypingArea"
 import TypingHeader from "@/components/TypingHeader"
-import { Button } from "@/components/ui/button"
 import { Keyboard } from "@/components/ui/keyboard"
-import { useTypingTest } from "@/hooks/useTypingTest"
 import { Difficulty } from "@/lib/words"
 import { useState } from "react"
 import { motion } from "motion/react"
 import TypingArea2 from "@/components/TypingArea2"
 import TestSetting from "@/components/TestSetting"
 import { useTyping } from "@/hooks/useTyping"
+import StatsBar from "@/components/StatsBar"
+import { ResultsScreen } from "@/components/ResultsScreen"
 
 export default function Page() {
   const [difficulty, setDifficulty] = useState<Difficulty>("medium")
@@ -20,7 +20,10 @@ export default function Page() {
   //   difficulty
   // )
 
-  const { input, text, status, restart, onInput } = useTyping(duration, difficulty)
+  const { input, text, status, restart, onInput, stats, timeLeft } = useTyping(
+    duration,
+    difficulty
+  )
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 py-8">
@@ -40,8 +43,13 @@ export default function Page() {
               difficulty={difficulty}
               setDifficulty={setDifficulty}
             />
-
-            <TypingArea2 text={text} input={input} status={status} onInput={onInput} />
+            <StatsBar status={status} timeLeft={timeLeft} stats={stats} />
+            <TypingArea2
+              text={text}
+              input={input}
+              status={status}
+              onInput={onInput}
+            />
             {status === "running" && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -58,7 +66,7 @@ export default function Page() {
             )}
           </>
         ) : (
-          <div>Result</div>
+          <ResultsScreen onRestart={restart} stats={stats}/>
         )}
       </div>
 

@@ -1,11 +1,12 @@
-import { TestStatus } from "@/hooks/useTypingTest"
+
+import { TypingStatus } from "@/hooks/useTyping"
 import { generateParagraph } from "@/lib/words"
 import React, { useEffect, useRef, useState } from "react"
 
 interface TypingAreaProps {
   text: string
   input: string
-  status: TestStatus
+  status: TypingStatus
   onInput: (value: string) => void
 }
 

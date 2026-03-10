@@ -1,14 +1,8 @@
 import { Difficulty, generateParagraph } from "@/lib/words"
 import { useCallback, useEffect, useRef, useState } from "react"
+import { TypingStats } from "./useTyping"
 
-export interface TypingStats {
-  wpm: number
-  cpm: number
-  accuracy: number
-  correctChars: number
-  incorrectChars: number
-  totalTyped: number
-}
+
 
 export type TestStatus = "idle" | "running" | "finished"
 
@@ -66,6 +60,7 @@ export function useTypingTest(
   const startTimer = useCallback(() => {
     startTimeRef.current = Date.now()
     setStatus("running")
+
     timerRef.current = setInterval(() => {
       const elapsed = (Date.now() - startTimeRef.current) / 1000
       const remaining = Math.max(duration - elapsed, 0)
@@ -77,6 +72,7 @@ export function useTypingTest(
         setStatus("finished")
       }
     }, 100)
+    
   }, [])
 
   const handleInput = useCallback(

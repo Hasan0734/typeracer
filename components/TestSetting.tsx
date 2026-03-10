@@ -2,6 +2,7 @@ import React, { useState } from "react"
 import { Button } from "./ui/button"
 import { Difficulty } from "@/lib/words"
 import { SpeakerHighIcon, SpeakerSlashIcon } from "@phosphor-icons/react"
+import { IconKeyboard } from "@tabler/icons-react"
 
 const difficulties = [
   { label: "Easy", value: "easy" },
@@ -58,9 +59,12 @@ const TestSetting = ({
           </Button>
         ))}
       </div>
-      <div>
+      <div className="flex items-center gap-2">
         <Button size={'icon-sm'} onClick={() => setSpeakerToggle(!speakerToggle)}>
           {speakerToggle ? <SpeakerHighIcon /> : <SpeakerSlashIcon />}
+        </Button>
+         <Button size={'sm'} onClick={() => setSpeakerToggle(!speakerToggle)}>
+          Keyboard
         </Button>
       </div>
     </div>
