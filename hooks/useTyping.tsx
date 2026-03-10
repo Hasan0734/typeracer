@@ -49,9 +49,9 @@ export function useTyping(
       }
 
       const totalTyped = typed.length
-      const elapsedMin = Math.max(elapsedSec / 60, 0.1)
+      const elapsedMin = Math.max(elapsedSec / 60, 0.01)
 
-      const wpm = Math.round(correct / 5) / elapsedMin
+      const wpm = Math.round((correct / 5) / elapsedMin)  
       const cpm = Math.round(correct / elapsedMin)
 
       const accuracy =
@@ -71,19 +71,19 @@ export function useTyping(
 
   const startTimer = useCallback(() => {
     startTimeRef.current = Date.now()
-
+    setStatus("running")
     timerRef.current = setInterval(() => {
       const elapsed = (Date.now() - startTimeRef.current) / 1000
       const remaining = Math.max(duration - elapsed, 0)
 
-      setTimeLeft(remaining)
+      setTimeLeft(Math.ceil(remaining))
 
       if (remaining <= 0) {
         if (timerRef.current) clearInterval(timerRef.current)
         setStatus("finished")
       }
     }, 100)
-  }, [])
+  }, [duration])
 
   const onInput = useCallback(
     (value: string) => {
@@ -98,7 +98,7 @@ export function useTyping(
       setInput(value)
 
       const elapsed = (Date.now() - startTimeRef.current) / 1000
-      const newStats = calcStats(value, elapsed);
+      const newStats = calcStats(value, Math.max(elapsed,0.1));
       setStats(newStats);
 
       //if type enter text is finished;
@@ -109,7 +109,7 @@ export function useTyping(
       }
 
     },
-    [status, startTimer, text]
+    [status, startTimer, text, calcStats]
   )
 
   const restart = () => {

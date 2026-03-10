@@ -36,12 +36,12 @@ export function useTypingTest(
         else incorrect++
       }
       const totalTyped = typed.length
-      const elapsedMin = Math.max(elapsedSec / 60, 0.01)
+      const elapsedMin = Math.max(elapsedSec / 60, 0.1)
 
       //WPM; correct chars / 5 / minutes
 
-      const wpm = Math.round(correct / 5) / elapsedMin
-      const cpm = Math.round(correct / elapsedMin)
+      const wpm = Math.round(correct / 5) / elapsedMin;
+      const cpm = Math.round(correct / elapsedMin);
       const accuracy =
         totalTyped > 0 ? Math.round((correct / totalTyped) * 100) : 100
       return {
@@ -85,7 +85,6 @@ export function useTypingTest(
       }
       // don't allow typing beyond text length
       if (value.length > text.length) return
-
       setInput(value)
 
       const elapsed = (Date.now() - startTimeRef.current) / 1000
