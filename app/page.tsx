@@ -7,15 +7,20 @@ import { useTypingTest } from "@/hooks/useTypingTest"
 import { Difficulty } from "@/lib/words"
 import { useState } from "react"
 import { motion } from "motion/react"
+import TypingArea2 from "@/components/TypingArea2"
+import TestSetting from "@/components/TestSetting"
+import { useTyping } from "@/hooks/useTyping"
 
 export default function Page() {
   const [difficulty, setDifficulty] = useState<Difficulty>("medium")
-  const [duration, setDuration] = useState(60)
+  const [duration, setDuration] = useState(30)
 
-  const { input, text, handleInput, status, restart } = useTypingTest(
-    duration,
-    difficulty
-  )
+  // const { input, text, handleInput, status, restart } = useTypingTest(
+  //   duration,
+  //   difficulty
+  // )
+
+  const { input, text, status, restart, onInput } = useTyping(duration, difficulty)
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4 py-8">
@@ -23,12 +28,20 @@ export default function Page() {
         <TypingHeader />
         {status !== "finished" ? (
           <>
-            <TypingArea
+            {/* <TypingArea
               text={text}
               input={input}
               onInput={handleInput}
               status={status}
+            /> */}
+            <TestSetting
+              duration={duration}
+              setDuration={setDuration}
+              difficulty={difficulty}
+              setDifficulty={setDifficulty}
             />
+
+            <TypingArea2 text={text} input={input} status={status} onInput={onInput} />
             {status === "running" && (
               <motion.div
                 initial={{ opacity: 0 }}
@@ -49,7 +62,9 @@ export default function Page() {
         )}
       </div>
 
-      <Keyboard enableSound />
+      <div className="sr-only">
+        <Keyboard enableSound />
+      </div>
     </main>
   )
 }
