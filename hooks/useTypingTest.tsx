@@ -72,7 +72,7 @@ export function useTypingTest(
         setStatus("finished")
       }
     }, 100)
-    
+
   }, [])
 
   const handleInput = useCallback(
@@ -92,7 +92,7 @@ export function useTypingTest(
       const newStats = calcStats(value, Math.max(elapsed, 0.1))
       setStats(newStats)
 
-      // if typed entire text, finishe
+      // if typed entire text, finish
       if (value.length === text.length) {
         if (timerRef.current) clearInterval(timerRef.current)
         setStatus("finished")
