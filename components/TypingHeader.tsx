@@ -10,8 +10,8 @@ const TypingHeader = () => {
       className="flex items-center justify-center gap-3"
     >
       <IconKeyboard className="h-7 w-7 text-primary" />
-      <h1 className="font-display text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-        typeracer
+      <h1 className="font-display text-2xl font-bold tracking-wide text-foreground md:text-3xl">
+        Type Racer
       </h1>
     </motion.header>
   )

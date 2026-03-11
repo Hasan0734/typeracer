@@ -1,17 +1,28 @@
-"use client"
-import { TestStatus } from "@/hooks/useTypingTest"
-import React, { useEffect, useRef } from "react"
+import { TypingStatus } from "@/hooks/useTyping"
+import { generateParagraph } from "@/lib/words"
+import React, { useEffect, useRef, useState } from "react"
 
 interface TypingAreaProps {
-  input: string
-  status: TestStatus
   text: string
+  input: string
+  status: TypingStatus
   onInput: (value: string) => void
+  sound: boolean
 }
 
-const TypingArea = ({ input, status, text, onInput }: TypingAreaProps) => {
+const TypingArea = ({
+  text,
+  input,
+  status,
+  onInput,
+  sound,
+}: TypingAreaProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const textRef = useRef<HTMLDivElement>(null)
+
+  const errorAudio = useRef(new Audio("/sounds/fahhhhhhhhhhhhhh.mp3"))
+  const successAudio = useRef(new Audio("/sounds/nice-slow-mo.mp3"))
+  const [hasPlayedSuccess, setHasPlayedSuccess] = useState(false)
 
   useEffect(() => {
     inputRef.current?.focus()
@@ -20,10 +31,53 @@ const TypingArea = ({ input, status, text, onInput }: TypingAreaProps) => {
   useEffect(() => {
     if (!textRef.current) return
     const currentChar = textRef.current.querySelector(".char-current")
+
     if (currentChar) {
       currentChar.scrollIntoView({ block: "center", behavior: "smooth" })
     }
   }, [input])
+
+  // play error sound is faah
+  useEffect(() => {
+    const lastCharIndex = input.length - 1
+    if (lastCharIndex < 0) return
+
+    // Check if the most recent character typed is incorrect
+    if (input[lastCharIndex] !== text[lastCharIndex] && sound) {
+      const sound = errorAudio.current
+
+      sound.currentTime = 0 // Reset to start
+      sound.volume = 0.04 // volume 4%
+
+      sound.play()
+
+      // Stop the sound after 1.2 second
+      const timer = setTimeout(() => {
+        sound.pause()
+      }, 1200)
+
+      return () => clearTimeout(timer)
+    }
+  }, [input, text])
+
+  useEffect(() => {
+    if (input.length === 0) {
+      setHasPlayedSuccess(false) // Reset if they restart
+      return
+    }
+
+    const progress = (input.length / text.length) * 100
+
+    const isPerfectSoFar = input.split("").every((char, i) => char === text[i])
+
+    if (isPerfectSoFar && progress >= 50 && !hasPlayedSuccess) {
+      const sound = successAudio.current
+      sound.currentTime = 0
+      sound.play()
+
+      setHasPlayedSuccess(true) // Lock it so it doesn't replay on every key after 50%
+    }
+  }, [input, text, hasPlayedSuccess])
 
   const handleContainerClick = () => {
     inputRef.current?.focus()
@@ -31,23 +85,21 @@ const TypingArea = ({ input, status, text, onInput }: TypingAreaProps) => {
 
   return (
     <div
-      className="roudned-lg relative cursor-text bg-card p-6 md:p-8"
+      className="relative rounded-xl bg-card p-5 md:p-7"
       onClick={handleContainerClick}
     >
-      {/* Hidden input to capture keystrokes */}
       <input
         id="text"
         name="text"
         ref={inputRef}
-        type="text"
-        value={input}
-        onChange={(e) => onInput(e.target.value)}
-        disabled={status === "finished"}
-        className="absolute h-0 w-0 opacity-0"
         autoComplete="off"
-        autoCapitalize="off"
         autoCorrect="off"
+        autoCapitalize="off"
         spellCheck={false}
+        onChange={(e) => onInput(e.target.value)}
+        value={input}
+        className="absolute size-0 opacity-0"
+        disabled={status === "finished"}
       />
 
       <div
@@ -56,6 +108,7 @@ const TypingArea = ({ input, status, text, onInput }: TypingAreaProps) => {
       >
         {text.split("").map((char, i) => {
           let className = "char-pending"
+
           if (i < input.length) {
             className = input[i] === char ? "char-correct" : "char-incorrect"
           } else if (i === input.length) {
@@ -70,9 +123,7 @@ const TypingArea = ({ input, status, text, onInput }: TypingAreaProps) => {
         })}
       </div>
 
-      {/* Focus hint */}
-
-      <p className="mt-4 text-center text-xs text-muted-foreground opacity-60">
+      <p className="mt-4 text-center text-xs text-muted-foreground opacity-40">
         Click here or start typing to focus
       </p>
     </div>

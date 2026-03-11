@@ -62,8 +62,10 @@ export function ResultsScreen({ stats, onRestart }: ResultsScreenProps) {
         </p>
       )} */}
 
-      <Button onClick={onRestart} size="lg" className="gap-2">
-        <IconRotateClockwise className="h-4 w-4" />
+      <Button onClick={onRestart} size="lg" className="group gap-2">
+        <span className="transition duration-500 group-hover:rotate-360">
+          <IconRotateClockwise className="h-4 w-4" />
+        </span>
         Restart Test
       </Button>
     </motion.div>
@@ -79,7 +81,7 @@ function ResultStat({
 }) {
   return (
     <div className="rounded-lg bg-card p-4">
-      <span className="font-display text-2xl font-bold text-foreground">
+      <span className="font-display text-2xl font-bold text-muted-foreground">
         {value}
       </span>
       <p className="mt-1 text-xs text-muted-foreground">{label}</p>
