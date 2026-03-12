@@ -2,7 +2,9 @@ import React, { useEffect, useRef, useState } from "react"
 import { Button } from "./ui/button"
 import { Difficulty } from "@/lib/words"
 import {
+  EyeClosedIcon,
   EyeIcon,
+  EyeSlashIcon,
   GearIcon,
   SpeakerHighIcon,
   SpeakerSlashIcon,
@@ -14,6 +16,7 @@ import { motion } from "motion/react"
 import { Switch } from "./ui/switch"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { Label } from "./ui/label"
+import { useApplicationStore } from "@/state"
 
 const difficulties = [
   { label: "Easy", value: "easy" },
@@ -28,32 +31,22 @@ const times = [
 ]
 
 interface SettingProps {
-  difficulty: Difficulty
-  setDifficulty: React.Dispatch<React.SetStateAction<Difficulty>>
-  duration: number
-  setDuration: React.Dispatch<React.SetStateAction<number>>
-  sound: boolean
-  setSound: React.Dispatch<React.SetStateAction<boolean>>
-  status: TypingStatus
-  showKeyboard: boolean
-  setShowKeyboard: React.Dispatch<React.SetStateAction<boolean>>
-  keySound: boolean
-  setKeySound: React.Dispatch<React.SetStateAction<boolean>>
+  restart: () => void
 }
 
-const TestSetting = ({
-  difficulty,
-  setDifficulty,
-  duration,
-  setDuration,
-  sound,
-  setSound,
-  status,
-  showKeyboard,
-  setShowKeyboard,
-  keySound,
-  setKeySound,
-}: SettingProps) => {
+const TestSetting = ({ restart }: SettingProps) => {
+  const {
+    duration,
+    setDuration,
+    difficulty,
+    setDifficulty,
+    setKeySound,
+    keySound,
+    setShowKeyboard,
+    showKeyboard,
+    sound,
+    setSound,
+  } = useApplicationStore()
   const thudAudio = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
@@ -149,7 +142,7 @@ const TestSetting = ({
               </div>
               <div className="flex items-center justify-between rounded-xl py-0.5 text-sm">
                 <Label>
-                  <EyeIcon /> Keyboard
+                  {showKeyboard ? <EyeIcon /> : <EyeSlashIcon />} Keyboard
                 </Label>
                 <Switch
                   checked={showKeyboard}
@@ -163,7 +156,7 @@ const TestSetting = ({
         <Button
           variant={"outline"}
           size={"icon"}
-          // onClick={restart}
+          onClick={restart}
           className="group flex items-center gap-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
           <span className="transition duration-500 group-hover:rotate-360">

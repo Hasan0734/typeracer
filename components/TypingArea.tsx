@@ -1,4 +1,5 @@
 import { TypingStatus } from "@/hooks/useTyping"
+import { useApplicationStore } from "@/state"
 import React, { useEffect, useRef, useState } from "react"
 
 interface TypingAreaProps {
@@ -6,7 +7,6 @@ interface TypingAreaProps {
   input: string
   status: TypingStatus
   onInput: (value: string) => void
-  sound: boolean
 }
 
 const TypingArea = ({
@@ -14,7 +14,6 @@ const TypingArea = ({
   input,
   status,
   onInput,
-  sound,
 }: TypingAreaProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const textRef = useRef<HTMLDivElement>(null)
@@ -22,6 +21,8 @@ const TypingArea = ({
   const errorAudio = useRef<HTMLAudioElement | null>(null)
   const successAudio = useRef<HTMLAudioElement | null>(null)
   const [hasPlayedSuccess, setHasPlayedSuccess] = useState(false)
+
+  const {sound} = useApplicationStore()
 
   useEffect(() => {
     inputRef.current?.focus()
@@ -111,7 +112,7 @@ const TypingArea = ({
 
       <div
         ref={textRef}
-        className="max-h-50 overflow-hidden font-mono text-lg leading-relaxed tracking-wide select-none md:text-2xl"
+        className="max-h-28 overflow-hidden font-mono text-lg leading-relaxed tracking-wide select-none md:text-2xl"
       >
         {text.split("").map((char, i) => {
           let className = "char-pending"

@@ -12,13 +12,23 @@ import { IconRotateClockwise } from "@tabler/icons-react"
 import { Button } from "@/components/ui/button"
 import TypingArea from "@/components/TypingArea"
 import { cn } from "@/lib/utils"
+import { useStore } from "zustand"
+import { useApplicationStore } from "@/state"
 
 export default function Page() {
-  const [difficulty, setDifficulty] = useState<Difficulty>("medium")
-  const [duration, setDuration] = useState(30)
-  const [sound, setSound] = useState(false)
-  const [keySound, setKeySound] = useState(false)
-  const [showKeyboard, setShowKeyboard] = useState(false)
+  // const [difficulty, setDifficulty] = useState<Difficulty>("medium")
+  // const [duration, setDuration] = useState(30)
+  // const [sound, setSound] = useState(false)
+  // const [keySound, setKeySound] = useState(false)
+  // const [showKeyboard, setShowKeyboard] = useState(false)
+
+  const {
+    duration,
+    difficulty,
+    sound,
+    keySound,
+    showKeyboard,
+  } = useApplicationStore()
 
   const { input, text, status, restart, onInput, stats, timeLeft } = useTyping(
     duration,
@@ -32,17 +42,7 @@ export default function Page() {
         {status !== "finished" ? (
           <>
             <TestSetting
-              duration={duration}
-              setDuration={setDuration}
-              difficulty={difficulty}
-              setDifficulty={setDifficulty}
-              sound={sound}
-              setSound={setSound}
-              status={status}
-              showKeyboard={showKeyboard}
-              setShowKeyboard={setShowKeyboard}
-              setKeySound={setKeySound}
-              keySound={keySound}
+              restart={restart}
             />
             <StatsBar status={status} timeLeft={timeLeft} stats={stats} />
             <div className="relative">
@@ -51,9 +51,8 @@ export default function Page() {
                 input={input}
                 status={status}
                 onInput={onInput}
-                sound={sound}
               />
-              {status === "running" && (
+              {/* {status === "running" && (
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -71,7 +70,7 @@ export default function Page() {
                     <span className="sr-only">Restart</span>
                   </Button>
                 </motion.div>
-              )}
+              )} */}
             </div>
           </>
         ) : (
