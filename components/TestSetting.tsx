@@ -123,11 +123,15 @@ const TestSetting = ({
 
       <div className="flex items-center gap-2">
         <Popover>
-          <PopoverTrigger nativeButton={false}>
-            <Button variant={'outline'} size={'icon'}>
-              <GearIcon />
-            </Button>
-          </PopoverTrigger>
+          <PopoverTrigger
+            render={(props) => {
+              return (
+                <Button {...props} variant={"outline"} size={"icon"}>
+                  <GearIcon />
+                </Button>
+              )
+            }}
+        />
           <PopoverContent align="center" className={"w-40"}>
             <div className="space-y-1.5">
               <div className="flex items-center justify-between rounded-xl py-0.5 text-sm">

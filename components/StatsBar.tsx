@@ -16,12 +16,17 @@ const StatsBar = ({ timeLeft, status, stats }: StatsBarProps) => {
       className="flex items-center justify-center gap-6 text-sm md:gap-10 md:text-base"
     >
       {/* Timer */}
-      <div className="text-center">
+      <motion.div 
+
+        initial={{opacity: 0, scale: 0.2}}
+        animate={{opacity: 1, scale: 1}}
+      
+      className="text-center">
         <span className="font-display text-2xl font-bold text-primary tabular-nums md:text-4xl">
           {timeLeft}
         </span>
         <p className="mt-1 text-xs text-muted-foreground">seconds</p>
-      </div>
+      </motion.div>
       {status !== "idle" && (
         <>
           <Stat label="wpm" value={stats.wpm} />
