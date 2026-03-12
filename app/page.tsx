@@ -17,6 +17,7 @@ export default function Page() {
   const [difficulty, setDifficulty] = useState<Difficulty>("medium")
   const [duration, setDuration] = useState(30)
   const [sound, setSound] = useState(false)
+  const [keySound, setKeySound] = useState(false)
   const [showKeyboard, setShowKeyboard] = useState(false)
 
   const { input, text, status, restart, onInput, stats, timeLeft } = useTyping(
@@ -40,6 +41,8 @@ export default function Page() {
               status={status}
               showKeyboard={showKeyboard}
               setShowKeyboard={setShowKeyboard}
+              setKeySound={setKeySound}
+              keySound={keySound}
             />
             <StatsBar status={status} timeLeft={timeLeft} stats={stats} />
             <div className="relative">
@@ -82,7 +85,7 @@ export default function Page() {
             "absolute top-0 left-0 -z-10 size-0 opacity-0": !showKeyboard,
           })}
         >
-          <Keyboard enableSound={sound} />
+          <Keyboard enableSound={keySound} />
         </div>
       )}
     </main>

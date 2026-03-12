@@ -1,9 +1,19 @@
-import React, { useRef, useState } from "react"
+import React, { useEffect, useRef, useState } from "react"
 import { Button } from "./ui/button"
 import { Difficulty } from "@/lib/words"
-import { SpeakerHighIcon, SpeakerSlashIcon } from "@phosphor-icons/react"
+import {
+  EyeIcon,
+  GearIcon,
+  SpeakerHighIcon,
+  SpeakerSlashIcon,
+} from "@phosphor-icons/react"
 import { IconKeyboard } from "@tabler/icons-react"
 import { TypingStatus } from "@/hooks/useTyping"
+import { motion } from "motion/react"
+
+import { Switch } from "./ui/switch"
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
+import { Label } from "./ui/label"
 
 const difficulties = [
   { label: "Easy", value: "easy" },
@@ -27,6 +37,8 @@ interface SettingProps {
   status: TypingStatus
   showKeyboard: boolean
   setShowKeyboard: React.Dispatch<React.SetStateAction<boolean>>
+  keySound: boolean
+  setKeySound: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const TestSetting = ({
@@ -39,32 +51,47 @@ const TestSetting = ({
   status,
   showKeyboard,
   setShowKeyboard,
+  keySound,
+  setKeySound,
 }: SettingProps) => {
-  const thudAudio = useRef(new Audio("/sounds/thud.mp3"))
+  const thudAudio = useRef<HTMLAudioElement | null>(null)
 
-  const handleSpeaker = () => {
-    if (!sound) {
-      const audio = thudAudio.current
+  useEffect(() => {
+    thudAudio.current = new Audio("/sounds/thud.mp3")
+  }, [])
+
+  const handleSpeaker = (value: boolean) => {
+    if (!sound && thudAudio?.current) {
+      const audio = thudAudio?.current
 
       audio.currentTime = 0 // Reset to start
-      audio.play()
+      audio.volume = 0.1 // 10% of volume
+      audio?.play()
 
-      // Stop the sound after 1.5 second
+      // Stop the sound after 1.2 second
       const timer = setTimeout(() => {
         audio.pause()
       }, 1200)
 
       clearTimeout(timer)
     }
-    setSound(!sound)
+    setSound(value)
   }
 
-  const handleKeyboard = () => {
-    setShowKeyboard(!showKeyboard)
+  const handleKeySound = (value: boolean) => {
+    setKeySound(value)
+  }
+
+  const handleKeyboard = (value: boolean) => {
+    setShowKeyboard(value)
   }
 
   return (
-    <div className="flex items-center justify-center gap-3">
+    <motion.div
+      initial={{ opacity: 0, y: -10 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="flex items-center justify-center gap-3"
+    >
       <div className="space-x-0.5 rounded-lg bg-card p-0.5">
         {difficulties.map((difficult) => (
           <Button
@@ -93,16 +120,43 @@ const TestSetting = ({
           </Button>
         ))}
       </div>
+
       <div className="flex items-center gap-2">
-        <Button size={"icon-sm"} onClick={handleSpeaker}>
-          {sound ? <SpeakerHighIcon /> : <SpeakerSlashIcon />}
-        </Button>
-        <Button size={"sm"} onClick={handleKeyboard}>
-          <IconKeyboard />
-          {showKeyboard ? "Hide" : "Show"}
-        </Button>
+        <Popover>
+          <PopoverTrigger nativeButton={false}>
+            <Button variant={'outline'} size={'icon'}>
+              <GearIcon />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent align="center" className={"w-40"}>
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between rounded-xl py-0.5 text-sm">
+                <Label>
+                  {sound ? <SpeakerHighIcon /> : <SpeakerSlashIcon />} Music
+                </Label>
+                <Switch checked={sound} onCheckedChange={handleSpeaker} />
+              </div>
+              <div className="flex items-center justify-between rounded-xl py-0.5 text-sm">
+                <Label>
+                  {keySound ? <SpeakerHighIcon /> : <SpeakerSlashIcon />} Key
+                  Sound
+                </Label>
+                <Switch checked={keySound} onCheckedChange={handleKeySound} />
+              </div>
+              <div className="flex items-center justify-between rounded-xl py-0.5 text-sm">
+                <Label>
+                  <EyeIcon /> Keyboard
+                </Label>
+                <Switch
+                  checked={showKeyboard}
+                  onCheckedChange={handleKeyboard}
+                />
+              </div>
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

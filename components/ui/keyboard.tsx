@@ -515,7 +515,7 @@ export const Keyboard = ({
 
 export const Keypad = () => {
   return (
-    <div className="h-full w-fit rounded-lg bg-linear-to-b from-pink-500 to-red-500 p-1 shadow-sm ring-1 shadow-black/5 ring-black/5">
+    <div className="h-full w-fit rounded-lg bg-card 0 p-1 shadow-sm ring-1 shadow-black/5 ring-black/5">
       {/* Function Row */}
       <Row>
         <Key
@@ -575,8 +575,8 @@ export const Keypad = () => {
           <span className="mt-1">F12</span>
         </Key>
         <Key containerClassName="rounded-tr-xl" className="rounded-tr-lg">
-          <div className="h-4 w-4 rounded-full bg-linear-to-b from-neutral-300 via-neutral-200 to-neutral-300 p-px">
-            <div className="h-full w-full rounded-full bg-neutral-100" />
+          <div className="h-4 w-4 rounded-full bg-linear-to-b from-card/40 via-neutral-card/20 to-neutral-card p-px">
+            <div className="h-full w-full rounded-full bg-card" />
           </div>
         </Key>
       </Row>
@@ -844,15 +844,15 @@ const Key = ({
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
         className={cn(
-          "flex h-6 w-6 cursor-pointer items-center justify-center rounded-[3.5px] bg-gray-100 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.5),0px_1px_1px_0px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(255,255,255,1)_inset] transition-transform duration-75 active:scale-[0.98]",
+          "flex h-6 w-6 cursor-pointer items-center justify-center rounded-[3.5px] bg-input shadow-[0px_0px_1px_0px_rgba(0,0,0,0.5),0px_1px_1px_0px_rgba(0,0,0,0.5),0px_1px_0px_0px_rgba(0,0,0,0.6)_inset] transition-transform duration-75 active:scale-[0.98]",
           isPressed &&
-            "scale-[0.98] bg-gray-100/80 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.5),0px_1px_1px_0px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(255,255,255,0.5)]",
+            "scale-[0.98] bg-card/40 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.5),0px_1px_1px_0px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(0,0,0,0.5)]",
           className,
         )}
       >
         <div
           className={cn(
-            "flex h-full w-full flex-col items-center justify-center text-[5px] text-neutral-700",
+            "flex h-full w-full flex-col items-center justify-center text-[5px] text-foreground",
             childrenClassName,
           )}
         >
@@ -906,13 +906,13 @@ const ModifierKey = ({
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
         className={cn(
-          "flex h-6 w-6 cursor-pointer items-center justify-center rounded-[3.5px] bg-gray-100 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.5),0px_1px_1px_0px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(255,255,255,1)_inset] transition-transform duration-75 active:scale-[0.98]",
+          "flex h-6 w-6 cursor-pointer items-center justify-center rounded-[3.5px] bg-input shadow-[0px_0px_1px_0px_rgba(0,0,0,0.5),0px_1px_1px_0px_rgba(0,0,0,0.5),0px_1px_0px_0px_rgba(0,0,0,0.6)_inset] transition-transform duration-75 active:scale-[0.98]",
           isPressed &&
-            "scale-[0.98] bg-gray-100/80 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.5),0px_1px_1px_0px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(255,255,255,0.5)]",
+            "scale-[0.98] bg-card/40 shadow-[0px_0px_1px_0px_rgba(0,0,0,0.5),0px_1px_1px_0px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(255,255,255,0.5)]",
           className,
         )}
       >
-        <div className="flex h-full w-full flex-col items-start justify-between p-1 text-[5px] text-neutral-700">
+        <div className="flex h-full w-full flex-col items-start justify-between p-1 text-[5px] text-foreground">
           {children}
         </div>
       </button>

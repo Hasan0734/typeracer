@@ -1,5 +1,4 @@
 import { TypingStatus } from "@/hooks/useTyping"
-import { generateParagraph } from "@/lib/words"
 import React, { useEffect, useRef, useState } from "react"
 
 interface TypingAreaProps {
@@ -20,13 +19,18 @@ const TypingArea = ({
   const inputRef = useRef<HTMLInputElement>(null)
   const textRef = useRef<HTMLDivElement>(null)
 
-  const errorAudio = useRef(new Audio("/sounds/fahhhhhhhhhhhhhh.mp3"))
-  const successAudio = useRef(new Audio("/sounds/nice-slow-mo.mp3"))
+  const errorAudio = useRef<HTMLAudioElement | null>(null)
+  const successAudio = useRef<HTMLAudioElement | null>(null)
   const [hasPlayedSuccess, setHasPlayedSuccess] = useState(false)
 
   useEffect(() => {
     inputRef.current?.focus()
   }, [status])
+
+  useEffect(() => {
+    errorAudio.current = new Audio("/sounds/fahhhhhhhhhhhhhh.mp3")
+    successAudio.current = new Audio("/sounds/nice-slow-mo.mp3")
+  }, [])
 
   useEffect(() => {
     if (!textRef.current) return
@@ -42,20 +46,21 @@ const TypingArea = ({
     const lastCharIndex = input.length - 1
     if (lastCharIndex < 0) return
 
-    // Check if the most recent character typed is incorrect
-    if (input[lastCharIndex] !== text[lastCharIndex] && sound) {
-      const sound = errorAudio.current
+    if (
+      input[lastCharIndex] !== text[lastCharIndex] &&
+      sound &&
+      errorAudio.current
+    ) {
+      const faaahSound = errorAudio.current
 
-      sound.currentTime = 0 // Reset to start
-      sound.volume = 0.04 // volume 4%
+      faaahSound.currentTime = 0 // Reset to start
+      faaahSound.volume = 0.04 // volume 4%
 
-      sound.play()
+      faaahSound.play()
 
-      // Stop the sound after 1.2 second
       const timer = setTimeout(() => {
-        sound.pause()
+        faaahSound.pause()
       }, 1200)
-
       return () => clearTimeout(timer)
     }
   }, [input, text])
@@ -71,9 +76,11 @@ const TypingArea = ({
     const isPerfectSoFar = input.split("").every((char, i) => char === text[i])
 
     if (isPerfectSoFar && progress >= 50 && !hasPlayedSuccess) {
-      const sound = successAudio.current
-      sound.currentTime = 0
-      sound.play()
+      if (successAudio.current) {
+        const sound = successAudio.current
+        sound.currentTime = 0
+        sound.play()
+      }
 
       setHasPlayedSuccess(true) // Lock it so it doesn't replay on every key after 50%
     }
