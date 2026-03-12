@@ -60,7 +60,7 @@ export default function Page() {
                   className="absolute top-2 right-3 flex justify-center"
                 >
                   <Button
-                    variant={"ghost"}
+                    variant={"outline"}
                     size={"icon-xs"}
                     onClick={restart}
                     className="group flex items-center gap-2 text-xs text-muted-foreground transition-colors hover:text-foreground"

@@ -7,7 +7,7 @@ import {
   SpeakerHighIcon,
   SpeakerSlashIcon,
 } from "@phosphor-icons/react"
-import { IconKeyboard } from "@tabler/icons-react"
+import { IconKeyboard, IconRotateClockwise } from "@tabler/icons-react"
 import { TypingStatus } from "@/hooks/useTyping"
 import { motion } from "motion/react"
 
@@ -131,7 +131,7 @@ const TestSetting = ({
                 </Button>
               )
             }}
-        />
+          />
           <PopoverContent align="center" className={"w-40"}>
             <div className="space-y-1.5">
               <div className="flex items-center justify-between rounded-xl py-0.5 text-sm">
@@ -159,6 +159,18 @@ const TestSetting = ({
             </div>
           </PopoverContent>
         </Popover>
+
+        <Button
+          variant={"outline"}
+          size={"icon"}
+          // onClick={restart}
+          className="group flex items-center gap-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <span className="transition duration-500 group-hover:rotate-360">
+            <IconRotateClockwise className="h-4 w-4" />
+          </span>
+          <span className="sr-only">Restart</span>
+        </Button>
       </div>
     </motion.div>
   )
