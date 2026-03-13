@@ -1,14 +1,19 @@
 import React from "react"
 import { motion } from "motion/react"
-import { TypingStats, TypingStatus } from "@/hooks/useTyping"
+import { useApplicationStore } from "@/state"
 
 interface StatsBarProps {
   timeLeft: number
-  status: TypingStatus
-  stats: TypingStats
 }
 
-const StatsBar = ({ timeLeft, status, stats }: StatsBarProps) => {
+const StatsBar = ({ timeLeft }: StatsBarProps) => {
+  const {
+    status,
+    wpm,
+    cpm,
+    accuracy,
+  } = useApplicationStore()
+
   return (
     <motion.div
       initial={{ opacity: 0, y: -10 }}
@@ -16,12 +21,11 @@ const StatsBar = ({ timeLeft, status, stats }: StatsBarProps) => {
       className="flex items-center justify-center gap-6 text-sm md:gap-10 md:text-base"
     >
       {/* Timer */}
-      <motion.div 
-
-        initial={{opacity: 0, scale: 0.2}}
-        animate={{opacity: 1, scale: 1}}
-      
-      className="text-center">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.2 }}
+        animate={{ opacity: 1, scale: 1 }}
+        className="text-center"
+      >
         <span className="font-display text-2xl font-bold text-primary tabular-nums md:text-4xl">
           {timeLeft}
         </span>
@@ -29,9 +33,9 @@ const StatsBar = ({ timeLeft, status, stats }: StatsBarProps) => {
       </motion.div>
       {status !== "idle" && (
         <>
-          <Stat label="wpm" value={stats.wpm} />
-          <Stat label="cpm" value={stats.cpm} />
-          <Stat label="acc" value={`${stats.accuracy}%`} />
+          <Stat label="wpm" value={wpm} />
+          <Stat label="cpm" value={cpm} />
+          <Stat label="acc" value={`${accuracy}%`} />
         </>
       )}
     </motion.div>

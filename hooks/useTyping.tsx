@@ -1,16 +1,9 @@
 "use client"
 
 import { Difficulty, generateParagraph } from "@/lib/words"
+import { TypingStats, useApplicationStore } from "@/state"
 import { useCallback, useEffect, useRef, useState } from "react"
 
-export interface TypingStats {
-  wpm: number
-  cpm: number
-  accuracy: number
-  correctChars: number
-  incorrectChars: number
-  totalTyped: number
-}
 
 export type TypingStatus = "idle" | "running" | "finished"
 
@@ -19,18 +12,10 @@ export function useTyping(
   difficult: Difficulty = "medium"
 ) {
   const [input, setInput] = useState("")
-  const [status, setStatus] = useState<TypingStatus>("idle")
   const [text, setText] = useState(() => generateParagraph(80, difficult))
   const [timeLeft, setTimeLeft] = useState(duration)
 
-  const [stats, setStats] = useState<TypingStats>({
-    wpm: 0,
-    cpm: 0,
-    accuracy: 100,
-    correctChars: 0,
-    incorrectChars: 0,
-    totalTyped: 0,
-  })
+  const {status, setStatus, setStats} = useApplicationStore()
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const startTimeRef = useRef<number>(0)
@@ -179,7 +164,6 @@ export function useTyping(
     status,
     restart,
     onInput,
-    stats,
     timeLeft,
   }
 }

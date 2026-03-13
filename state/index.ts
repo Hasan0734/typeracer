@@ -1,17 +1,17 @@
-import { TypingStats, TypingStatus } from '@/hooks/useTyping';
+import { TypingStatus } from '@/hooks/useTyping';
 import { Difficulty } from '@/lib/words'
 import { create, createStore } from 'zustand';
 import { persist, PersistStorage } from "zustand/middleware";
 
 
-// interface TypingStats extends ApplicationFields{
-//     wpm: number
-//     cpm: number
-//     accuracy: number
-//     correctChars: number
-//     incorrectChars: number
-//     totalTyped: number
-// }
+export interface TypingStats {
+    wpm: number
+    cpm: number
+    accuracy: number
+    correctChars: number
+    incorrectChars: number
+    totalTyped: number
+}
 
 interface ApplicationFields extends TypingStats {
     difficulty: Difficulty;
@@ -29,6 +29,9 @@ interface ApplicationState extends ApplicationFields {
     setSound: (sound: boolean) => void;
     setKeySound: (sound: boolean) => void;
     setShowKeyboard: (open: boolean) => void;
+    setStatus: (status: TypingStatus) => void;
+    setStats: (data: TypingStats) => void;
+    reset: () => void;
 }
 
 export const useApplicationStore = create<ApplicationState>()(
@@ -43,8 +46,22 @@ export const useApplicationStore = create<ApplicationState>()(
         setSound: (sound: boolean) => set({ sound }),
         setKeySound: (keySound: boolean) => set({ keySound }),
         setShowKeyboard: (open) => set({ showKeyboard: open }),
+        setStatus: (status) => set({ status }),
+        setStats: (stats) => set({ ...stats }),
+
+        reset: () => {
+            set(initialState())
+        },
     }), {
-        name: "typing-settings"
+        name: "typing-settings",
+        partialize: (state) => ({
+            sound: state.sound,
+            keySound: state.keySound,
+            duration: state.duration,
+            showKeyboard: state.showKeyboard,
+            difficulty: state.difficulty
+
+        }),
     })
 )
 
@@ -75,8 +92,34 @@ function initialState(): ApplicationFields {
 }
 
 
-//   const [difficulty, setDifficulty] = useState<Difficulty>("medium")
-//   const [duration, setDuration] = useState(30)
-//   const [sound, setSound] = useState(false)
-//   const [keySound, setKeySound] = useState(false)
-//   const [showKeyboard, setShowKeyboard] = useState(false)
+
+interface ScoreFields {
+    wpm: number,
+    accuracy: number;
+    difficulty: Difficulty;
+    duration: 0,
+    date: string
+}
+
+export const useBestScore = create<ScoreFields>()(
+    persist((set) => ({
+        wpm: 0,
+        accuracy: 0,
+        difficulty: 'medium',
+        duration: 0,
+        date: new Date().toISOString(),
+        updateBestScore: (data: ScoreFields) => {
+            set({ ...data })
+        }
+
+    }), {
+        name: "best-type-score",
+        partialize: (state) => ({
+            wpm: state.wpm,
+            accuracy: state.accuracy,
+            difficulty: state.difficulty,
+            duration: state.duration,
+            date: state.date
+        })
+    })
+)

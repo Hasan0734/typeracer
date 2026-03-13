@@ -1,18 +1,20 @@
 import { motion } from "motion/react"
 import { Button } from "@/components/ui/button"
-import type { TypingStats } from "@/hooks/useTyping"
 import { TrophyIcon } from "@phosphor-icons/react"
 import { IconRotateClockwise } from "@tabler/icons-react"
+import { useApplicationStore } from "@/state"
 
 interface ResultsScreenProps {
-  stats: TypingStats
   onRestart: () => void
 }
 
 /** Shows final results after test completion */
-export function ResultsScreen({ stats, onRestart }: ResultsScreenProps) {
+export function ResultsScreen({  onRestart }: ResultsScreenProps) {
   //   const best = getPersonalBest();
   //   const isNewBest = best && stats.wpm >= best.wpm;
+
+
+  const {wpm, totalTyped, accuracy, incorrectChars, correctChars} = useApplicationStore()
 
   return (
     <motion.div
@@ -43,17 +45,17 @@ export function ResultsScreen({ stats, onRestart }: ResultsScreenProps) {
           transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
           className="font-display text-6xl font-bold text-primary md:text-8xl"
         >
-          {stats.wpm}
+          {wpm}
         </motion.span>
         <p className="mt-2 text-sm text-muted-foreground">words per minute</p>
       </div>
 
       {/* Detailed stats grid */}
       <div className="mx-auto grid max-w-lg grid-cols-2 gap-4 md:grid-cols-4">
-        <ResultStat label="Accuracy" value={`${stats.accuracy}%`} />
-        <ResultStat label="Characters" value={stats.totalTyped} />
-        <ResultStat label="Correct" value={stats.correctChars} />
-        <ResultStat label="Mistakes" value={stats.incorrectChars} />
+        <ResultStat label="Accuracy" value={`${accuracy}%`} />
+        <ResultStat label="Characters" value={totalTyped} />
+        <ResultStat label="Correct" value={correctChars} />
+        <ResultStat label="Mistakes" value={incorrectChars} />
       </div>
 
       {/* {best && (

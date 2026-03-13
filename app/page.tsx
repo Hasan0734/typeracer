@@ -25,12 +25,11 @@ export default function Page() {
   const {
     duration,
     difficulty,
-    sound,
     keySound,
     showKeyboard,
   } = useApplicationStore()
 
-  const { input, text, status, restart, onInput, stats, timeLeft } = useTyping(
+  const { input, text, status, restart, onInput, timeLeft } = useTyping(
     duration,
     difficulty
   )
@@ -44,7 +43,7 @@ export default function Page() {
             <TestSetting
               restart={restart}
             />
-            <StatsBar status={status} timeLeft={timeLeft} stats={stats} />
+            <StatsBar  timeLeft={timeLeft}  />
             <div className="relative">
               <TypingArea
                 text={text}
@@ -74,7 +73,7 @@ export default function Page() {
             </div>
           </>
         ) : (
-          <ResultsScreen onRestart={restart} stats={stats} />
+          <ResultsScreen onRestart={restart}  />
         )}
       </div>
 
