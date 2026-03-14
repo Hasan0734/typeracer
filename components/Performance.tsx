@@ -11,9 +11,22 @@ import {
 import { useBestScore } from "@/state"
 import { format, parseISO } from "date-fns"
 import { Badge } from "./ui/badge"
+import { Button } from "./ui/button"
+import { TrashIcon } from "@phosphor-icons/react"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "./ui/alert-dialog"
 
 const PerformanceHistory = () => {
-  const { scores } = useBestScore()
+  const { scores, clearScore } = useBestScore()
 
   return (
     <section className="space-y-6">
@@ -21,9 +34,32 @@ const PerformanceHistory = () => {
         <h2 className="text-on-surface kinetic-border inline-block pb-2 text-3xl font-black tracking-tight">
           Scores
         </h2>
-        <button className="rounded-lg border border-primary/20 bg-primary/10 px-4 py-2 text-xs font-black tracking-widest text-primary uppercase transition-all hover:bg-primary/20">
-          Export Data
-        </button>
+        <AlertDialog>
+          <AlertDialogTrigger
+            render={(props) => {
+              return (
+                <Button size={"sm"} {...props} variant="outline">
+                  <TrashIcon /> Clear
+                </Button>
+              )
+            }}
+          ></AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+              <AlertDialogDescription>
+                This action cannot be undone. This will permanently delete your
+                performance history.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              <AlertDialogCancel size={"sm"}>Cancel</AlertDialogCancel>
+              <AlertDialogAction onClick={clearScore} size={"sm"}>
+                Confirm
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
       <Table className="overflow-hidden rounded-md">
         <TableCaption>A list of your top 10 scores.</TableCaption>

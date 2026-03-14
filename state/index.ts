@@ -108,6 +108,7 @@ interface ScoreState {
 interface BestScoreState extends ScoreState {
     saveBestScore: (data: ScoreFields) => void;
     getBestScore: () => ScoreFields | null;
+    clearScore: () => void;
 }
 
 export const useBestScore = create<BestScoreState>()(
@@ -124,6 +125,9 @@ export const useBestScore = create<BestScoreState>()(
         },
         getBestScore: () => {
             return get().scores.length > 0 ? get().scores[0] : null
+        },
+        clearScore: () => {
+            set({ scores: [] })
         }
 
     }), {

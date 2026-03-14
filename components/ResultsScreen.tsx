@@ -4,7 +4,8 @@ import { TrophyIcon } from "@phosphor-icons/react"
 import { IconRotateClockwise } from "@tabler/icons-react"
 import { useApplicationStore, useBestScore } from "@/state"
 import PerformanceHistory from "./Performance"
-import canfetti from "canvas-confetti"
+import confetti from "canvas-confetti"
+import { useEffect } from "react"
 
 interface ResultsScreenProps {
   onRestart: () => void
@@ -22,6 +23,17 @@ export function ResultsScreen({ onRestart }: ResultsScreenProps) {
   // const isNewBest = false
 
   // console.log({scores: })
+
+  useEffect(() => {
+    if (isNewBest) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        
+      })
+    }
+  }, [isNewBest])
 
   return (
     <>

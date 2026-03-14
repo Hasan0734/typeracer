@@ -27,7 +27,7 @@ export default function Page() {
     <main className="flex min-h-screen flex-col items-center justify-center overflow-x-hidden px-4 py-8">
       <div className="relative mb-10 w-full max-w-3xl space-y-8">
         <TypingHeader />
-        {/* {status !== "finished" ? (
+        {status !== "finished" ? (
           <>
             <TestSetting restart={restart} />
             <StatsBar timeLeft={timeLeft} />
@@ -40,9 +40,9 @@ export default function Page() {
               />
             </div>
           </>
-        ) : ( */}
+        ) : (
           <ResultsScreen onRestart={restart} />
-          {/* )} */}
+        )}
       </div>
 
       {/* {status !== "finished" && (
