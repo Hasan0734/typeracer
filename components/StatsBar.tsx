@@ -18,7 +18,7 @@ const StatsBar = ({ timeLeft }: StatsBarProps) => {
     <motion.div
       initial={{ opacity: 0, y: -10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="flex items-center justify-center gap-6 text-sm md:gap-10 md:text-base"
+      className=" flex items-center justify-center gap-6 text-sm md:gap-10 md:text-base"
     >
       {/* Timer */}
       <motion.div

@@ -9,8 +9,7 @@ import {
   SpeakerHighIcon,
   SpeakerSlashIcon,
 } from "@phosphor-icons/react"
-import { IconKeyboard, IconRotateClockwise } from "@tabler/icons-react"
-import { TypingStatus } from "@/hooks/useTyping"
+import {  IconRotateClockwise } from "@tabler/icons-react"
 import { motion } from "motion/react"
 
 import { Switch } from "./ui/switch"
@@ -46,6 +45,7 @@ const TestSetting = ({ restart }: SettingProps) => {
     showKeyboard,
     sound,
     setSound,
+    status
   } = useApplicationStore()
   const thudAudio = useRef<HTMLAudioElement | null>(null)
 

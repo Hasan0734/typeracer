@@ -97,29 +97,39 @@ interface ScoreFields {
     wpm: number,
     accuracy: number;
     difficulty: Difficulty;
-    duration: 0,
+    duration: number,
     date: string
 }
 
-export const useBestScore = create<ScoreFields>()(
-    persist((set) => ({
-        wpm: 0,
-        accuracy: 0,
-        difficulty: 'medium',
-        duration: 0,
-        date: new Date().toISOString(),
-        updateBestScore: (data: ScoreFields) => {
-            set({ ...data })
+interface ScoreState {
+    scores: ScoreFields[]
+}
+
+interface BestScoreState extends ScoreState {
+    saveBestScore: (data: ScoreFields) => void;
+    getBestScore: () => ScoreFields | null;
+}
+
+export const useBestScore = create<BestScoreState>()(
+    persist((set, get) => ({
+        scores: [],
+
+        saveBestScore: (newScore: ScoreFields) => {
+
+            const scores = [...get().scores];
+            scores.push(newScore);
+
+            scores.sort((a, b) => b.wpm - a.wpm);
+            set({ scores })
+        },
+        getBestScore: () => {
+            return get().scores.length > 0 ? get().scores[0] : null
         }
 
     }), {
         name: "best-type-score",
         partialize: (state) => ({
-            wpm: state.wpm,
-            accuracy: state.accuracy,
-            difficulty: state.difficulty,
-            duration: state.duration,
-            date: state.date
+            scores: state.scores
         })
     })
 )

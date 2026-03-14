@@ -1,9 +1,8 @@
 "use client"
 
 import { Difficulty, generateParagraph } from "@/lib/words"
-import { TypingStats, useApplicationStore } from "@/state"
+import { TypingStats, useApplicationStore, useBestScore } from "@/state"
 import { useCallback, useEffect, useRef, useState } from "react"
-
 
 export type TypingStatus = "idle" | "running" | "finished"
 
@@ -15,7 +14,9 @@ export function useTyping(
   const [text, setText] = useState(() => generateParagraph(80, difficult))
   const [timeLeft, setTimeLeft] = useState(duration)
 
-  const {status, setStatus, setStats} = useApplicationStore()
+  const { status, setStatus, setStats, totalTyped, difficulty, wpm, accuracy } =
+    useApplicationStore()
+  const { saveBestScore } = useBestScore()
 
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
   const startTimeRef = useRef<number>(0)
@@ -27,9 +28,7 @@ export function useTyping(
     }
   }, [input, text.length, difficult])
 
-  // -------------------------
   // Stats Calculation
-  // -------------------------
   const calcStats = useCallback(
     (typed: string, elapsedSec: number): TypingStats => {
       let correct = 0
@@ -49,6 +48,7 @@ export function useTyping(
 
       const grossWpm = correct / 5 / elapsedMin
       const netWpm = grossWpm - incorrect / elapsedMin
+
       const wpm = Math.max(0, Math.round(netWpm))
 
       const cpm = Math.round(correct / elapsedMin)
@@ -68,9 +68,7 @@ export function useTyping(
     [text]
   )
 
-  // -------------------------
   // Timer
-  // -------------------------
   const startTimer = useCallback(() => {
     startTimeRef.current = Date.now()
     setStatus("running")
@@ -88,9 +86,7 @@ export function useTyping(
     }, 100)
   }, [duration])
 
-  // -------------------------
   // Input Handler
-  // -------------------------
   const onInput = useCallback(
     (value: string) => {
       if (status === "finished") return
@@ -113,9 +109,7 @@ export function useTyping(
     [status, startTimer, text]
   )
 
-  // -------------------------
   // Update Stats
-  // -------------------------
   useEffect(() => {
     if (status !== "running") return
 
@@ -125,9 +119,19 @@ export function useTyping(
     setStats(newStats)
   }, [input, timeLeft, calcStats, status])
 
-  // -------------------------
+  useEffect(() => {
+    if (status === "finished" && totalTyped > 0) {
+      saveBestScore({
+        wpm,
+        accuracy,
+        difficulty: difficulty,
+        duration: duration,
+        date: new Date().toISOString(),
+      })
+    }
+  }, [status, wpm, accuracy, difficulty, duration])
+
   // Restart Test
-  // -------------------------
   const restart = useCallback(() => {
     if (timerRef.current) clearInterval(timerRef.current)
 

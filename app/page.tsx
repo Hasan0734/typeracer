@@ -16,18 +16,7 @@ import { useStore } from "zustand"
 import { useApplicationStore } from "@/state"
 
 export default function Page() {
-  // const [difficulty, setDifficulty] = useState<Difficulty>("medium")
-  // const [duration, setDuration] = useState(30)
-  // const [sound, setSound] = useState(false)
-  // const [keySound, setKeySound] = useState(false)
-  // const [showKeyboard, setShowKeyboard] = useState(false)
-
-  const {
-    duration,
-    difficulty,
-    keySound,
-    showKeyboard,
-  } = useApplicationStore()
+  const { duration, difficulty, keySound, showKeyboard } = useApplicationStore()
 
   const { input, text, status, restart, onInput, timeLeft } = useTyping(
     duration,
@@ -38,12 +27,10 @@ export default function Page() {
     <main className="flex min-h-screen flex-col items-center justify-center overflow-x-hidden px-4 py-8">
       <div className="relative mb-10 w-full max-w-3xl space-y-8">
         <TypingHeader />
-        {status !== "finished" ? (
+        {/* {status !== "finished" ? (
           <>
-            <TestSetting
-              restart={restart}
-            />
-            <StatsBar  timeLeft={timeLeft}  />
+            <TestSetting restart={restart} />
+            <StatsBar timeLeft={timeLeft} />
             <div className="relative">
               <TypingArea
                 text={text}
@@ -51,33 +38,14 @@ export default function Page() {
                 status={status}
                 onInput={onInput}
               />
-              {/* {status === "running" && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="absolute top-2 right-3 flex justify-center"
-                >
-                  <Button
-                    variant={"outline"}
-                    size={"icon-xs"}
-                    onClick={restart}
-                    className="group flex items-center gap-2 text-xs text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    <span className="transition duration-500 group-hover:rotate-360">
-                      <IconRotateClockwise className="h-4 w-4" />
-                    </span>
-                    <span className="sr-only">Restart</span>
-                  </Button>
-                </motion.div>
-              )} */}
             </div>
           </>
-        ) : (
-          <ResultsScreen onRestart={restart}  />
-        )}
+        ) : ( */}
+          <ResultsScreen onRestart={restart} />
+          {/* )} */}
       </div>
 
-      {status !== "finished" && (
+      {/* {status !== "finished" && (
         <div
           className={cn({
             "absolute top-0 left-0 -z-10 size-0 opacity-0": !showKeyboard,
@@ -85,7 +53,7 @@ export default function Page() {
         >
           <Keyboard enableSound={keySound} />
         </div>
-      )}
+      )} */}
     </main>
   )
 }
