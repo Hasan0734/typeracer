@@ -10,14 +10,10 @@ import {
 } from "@/components/ui/table"
 import { useBestScore } from "@/state"
 import { format, parseISO } from "date-fns"
+import { Badge } from "./ui/badge"
 
 const PerformanceHistory = () => {
-  const { getBestScore, scores } = useBestScore()
-
-  console.log(scores)
-
-  const date = new Date()
-  console.log(date.toString())
+  const { scores } = useBestScore()
 
   return (
     <section className="space-y-6">
@@ -33,23 +29,31 @@ const PerformanceHistory = () => {
         <TableCaption>A list of your top 10 scores.</TableCaption>
         <TableHeader className="bg-primary/10">
           <TableRow className="border-b-0!">
-            <TableHead className="w-25">Date</TableHead>
+            <TableHead className="w-25 text-center">Date</TableHead>
             <TableHead className="text-center">WPM</TableHead>
             <TableHead className="text-center">Accuracy</TableHead>
-            <TableHead className="text-right">Difficulty</TableHead>
-            <TableHead className="text-right">Duration</TableHead>
+            <TableHead className="text-center">Difficulty</TableHead>
+            <TableHead className="text-center">Duration</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           {scores.map((stat) => (
-            <TableRow key={stat.date}>
-              <TableCell className="font-medium">
+            <TableRow key={stat.date} className="bg-primary/5">
+              <TableCell className="text-center">
                 {format(parseISO(stat.date), "MMM dd, yyyy '-' HH:mm")}
               </TableCell>
-              <TableCell className="text-center">{stat.wpm}</TableCell>
-              <TableCell className="text-center">{stat.accuracy}</TableCell>
-              <TableCell className="text-right">{stat.difficulty}</TableCell>
-              <TableCell className="text-right">{stat.duration}</TableCell>
+              <TableCell className="py-3 text-center">{stat.wpm}</TableCell>
+              <TableCell className="py-3 text-center">
+                {stat.accuracy}
+              </TableCell>
+              <TableCell className="py-3 text-center">
+                <Badge variant={"outline"} className="capitalize">
+                  {stat.difficulty}
+                </Badge>
+              </TableCell>
+              <TableCell className="py-3 text-center">
+                {stat.duration}
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>

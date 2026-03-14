@@ -4,6 +4,7 @@ import { TrophyIcon } from "@phosphor-icons/react"
 import { IconRotateClockwise } from "@tabler/icons-react"
 import { useApplicationStore, useBestScore } from "@/state"
 import PerformanceHistory from "./Performance"
+import canfetti from "canvas-confetti"
 
 interface ResultsScreenProps {
   onRestart: () => void
