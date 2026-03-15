@@ -31,26 +31,35 @@ export function useTyping(
   // Stats Calculation
   const calcStats = useCallback(
     (typed: string, elapsedSec: number): TypingStats => {
-      let correct = 0
-      let incorrect = 0
+      // let correct = 0
+      // let incorrect = 0
 
-      for (let i = 0; i < typed.length; i++) {
-        if (i >= text.length) {
-          incorrect++
-        } else if (typed[i] === text[i]) {
-          correct++
-        } else {
-          incorrect++
+      // for (let i = 0; i < typed.length; i++) {
+      //   console.log(i, text.length)
+      //   if (i >= text.length) {
+      //     incorrect++;
+      //   } else if (typed[i] === text[i]) {
+      //     correct++;
+      //   } else {
+      //     incorrect++;
+      //   }
+      // }
+
+      let correct = 0
+
+      for(let i = 0; i < typed.length; i++) {
+        if(typed[i] === text[i]){
+          correct++;
         }
       }
+
+      const incorrect = typed.length - correct;
 
       const elapsedMin = Math.max(elapsedSec / 60, 1 / 60)
 
       const grossWpm = correct / 5 / elapsedMin
       const netWpm = grossWpm - incorrect / elapsedMin
-
       const wpm = Math.max(0, Math.round(netWpm))
-
       const cpm = Math.round(correct / elapsedMin)
 
       const accuracy =

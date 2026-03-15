@@ -9,12 +9,7 @@ interface TypingAreaProps {
   onInput: (value: string) => void
 }
 
-const TypingArea = ({
-  text,
-  input,
-  status,
-  onInput,
-}: TypingAreaProps) => {
+const TypingArea = ({ text, input, status, onInput }: TypingAreaProps) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const textRef = useRef<HTMLDivElement>(null)
 
@@ -22,7 +17,7 @@ const TypingArea = ({
   const successAudio = useRef<HTMLAudioElement | null>(null)
   const [hasPlayedSuccess, setHasPlayedSuccess] = useState(false)
 
-  const {sound} = useApplicationStore()
+  const { sound } = useApplicationStore()
 
   useEffect(() => {
     inputRef.current?.focus()
@@ -76,16 +71,16 @@ const TypingArea = ({
 
     const isPerfectSoFar = input.split("").every((char, i) => char === text[i])
 
-    if (isPerfectSoFar && progress >= 50 && !hasPlayedSuccess) {
+    if (isPerfectSoFar && progress >= 50 && !hasPlayedSuccess && sound) {
       if (successAudio.current) {
-        const sound = successAudio.current
-        sound.currentTime = 0
-        sound.play()
+        const sound = successAudio.current;
+        sound.currentTime = 0;
+        sound.play();
       }
 
       setHasPlayedSuccess(true) // Lock it so it doesn't replay on every key after 50%
     }
-  }, [input, text, hasPlayedSuccess])
+  }, [input, text, hasPlayedSuccess, sound])
 
   const handleContainerClick = () => {
     inputRef.current?.focus()

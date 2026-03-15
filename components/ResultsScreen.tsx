@@ -11,18 +11,14 @@ interface ResultsScreenProps {
   onRestart: () => void
 }
 
-/** Shows final results after test completion */
 export function ResultsScreen({ onRestart }: ResultsScreenProps) {
-  //   const best = getPersonalBest();
-  const { scores, getBestScore } = useBestScore()
+  const {  getBestScore } = useBestScore()
   const { wpm, totalTyped, accuracy, incorrectChars, correctChars } =
     useApplicationStore()
 
   const best = getBestScore()
   const isNewBest = best && wpm >= best.wpm
-  // const isNewBest = false
 
-  // console.log({scores: })
 
   useEffect(() => {
     if (isNewBest) {

@@ -121,6 +121,7 @@ export const useBestScore = create<BestScoreState>()(
             scores.push(newScore);
 
             scores.sort((a, b) => b.wpm - a.wpm);
+            scores.length = 10;
             set({ scores })
         },
         getBestScore: () => {

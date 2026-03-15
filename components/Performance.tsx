@@ -15,7 +15,6 @@ import { Button } from "./ui/button"
 import { TrashIcon } from "@phosphor-icons/react"
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
@@ -31,7 +30,7 @@ const PerformanceHistory = () => {
   return (
     <section className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-on-surface kinetic-border inline-block pb-2 text-3xl font-black tracking-tight">
+        <h2 className="text-xl">
           Scores
         </h2>
         <AlertDialog>
@@ -54,9 +53,9 @@ const PerformanceHistory = () => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel size={"sm"}>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={clearScore} size={"sm"}>
+              <AlertDialogCancel onClick={clearScore} variant={'default'} size={"sm"}>
                 Confirm
-              </AlertDialogAction>
+              </AlertDialogCancel>
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialog>
@@ -80,7 +79,7 @@ const PerformanceHistory = () => {
               </TableCell>
               <TableCell className="py-3 text-center">{stat.wpm}</TableCell>
               <TableCell className="py-3 text-center">
-                {stat.accuracy}
+                {stat.accuracy}%
               </TableCell>
               <TableCell className="py-3 text-center">
                 <Badge variant={"outline"} className="capitalize">
@@ -88,7 +87,7 @@ const PerformanceHistory = () => {
                 </Badge>
               </TableCell>
               <TableCell className="py-3 text-center">
-                {stat.duration}
+                {stat.duration}s
               </TableCell>
             </TableRow>
           ))}
