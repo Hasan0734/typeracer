@@ -45,7 +45,7 @@ export default function Page() {
         )}
       </div>
 
-      {/* {status !== "finished" && (
+      {status !== "finished" && (
         <div
           className={cn({
             "absolute top-0 left-0 -z-10 size-0 opacity-0": !showKeyboard,
@@ -53,7 +53,7 @@ export default function Page() {
         >
           <Keyboard enableSound={keySound} />
         </div>
-      )} */}
+      )}
     </main>
   )
 }
