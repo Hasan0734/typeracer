@@ -25,7 +25,8 @@ import {
 } from "./ui/alert-dialog"
 
 const PerformanceHistory = () => {
-  const { scores, clearScore } = useBestScore()
+  const { scores, clearScore } = useBestScore();
+  console.log(scores)
 
   return (
     <section className="space-y-6">

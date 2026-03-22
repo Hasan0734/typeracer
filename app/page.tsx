@@ -1,18 +1,12 @@
 "use client"
 import TypingHeader from "@/components/TypingHeader"
 import { Keyboard } from "@/components/ui/keyboard"
-import { Difficulty } from "@/lib/words"
-import { useState } from "react"
-import { motion } from "motion/react"
 import TestSetting from "@/components/TestSetting"
 import { useTyping } from "@/hooks/useTyping"
 import StatsBar from "@/components/StatsBar"
 import { ResultsScreen } from "@/components/ResultsScreen"
-import { IconRotateClockwise } from "@tabler/icons-react"
-import { Button } from "@/components/ui/button"
 import TypingArea from "@/components/TypingArea"
 import { cn } from "@/lib/utils"
-import { useStore } from "zustand"
 import { useApplicationStore } from "@/state"
 
 export default function Page() {

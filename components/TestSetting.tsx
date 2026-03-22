@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react"
 import { Button } from "./ui/button"
 import { Difficulty } from "@/lib/words"
 import {
-  EyeClosedIcon,
   EyeIcon,
   EyeSlashIcon,
   GearIcon,
