@@ -26,7 +26,6 @@ import {
 
 const PerformanceHistory = () => {
   const { scores, clearScore } = useBestScore();
-  console.log(scores)
 
   return (
     <section className="space-y-6">
